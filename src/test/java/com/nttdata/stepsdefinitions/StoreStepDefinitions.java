@@ -59,7 +59,7 @@ public class StoreStepDefinitions {
     @Entonces("debería ver un mensaje indicando que la categoría no está disponible")
     public void deberiaVerUnMensajeIndicandoQueLaCategoriaNoEstaDisponible() {
         String mensajeError = storePage.obtenerMensajeCategoriaNoDisponible();
-        assertTrue("El mensaje de categoría no disponible no se muestra correctamente.", mensajeError.contains("La categoría no está disponible"));
+        assertTrue("El mensaje de categoría no disponible no se muestra correctamente.", mensajeError.contains("No se han encontrado coincidencias con tu búsqueda"));
         screenShot();
     }
 

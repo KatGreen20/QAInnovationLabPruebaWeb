@@ -2,6 +2,7 @@ package com.nttdata.page;
 
 import net.serenitybdd.core.exceptions.NoSuchElementException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +15,8 @@ public class StorePage {
     // Localizadores para los filtros de categoría y subcategoría
     private By categoriaDropdown = By.xpath("//*[@id='category-3']/a");
     private By subcategoriaDropdown = By.xpath("//*[@id=\"left-column\"]/div[1]/ul/li[2]/ul/li[1]/a");
+    private By inputBusqueda = By.xpath("//header/div[2]/div[1]/div[1]/div[2]/div[2]/form[1]/input[2]");
+    private By mensajeNoResultados = By.xpath("//h4[@id='product-search-no-matches']");
 
     // Constructor que recibe el WebDriver
     public StorePage(WebDriver driver) {
@@ -34,13 +37,18 @@ public class StorePage {
     }
 
     public String obtenerMensajeCategoriaNoDisponible() {
+        // Encuentra el campo de búsqueda e ingresa el término "Autos"
+        WebElement campoBusqueda = wait.until(ExpectedConditions.visibilityOfElementLocated(inputBusqueda));
+        campoBusqueda.clear(); // Limpia el campo de búsqueda si hay algún texto
+        campoBusqueda.sendKeys("Autos");
+        campoBusqueda.sendKeys(Keys.ENTER);
+
+        // Espera y verifica el mensaje de error si no se encuentran resultados
         try {
-            // Verifica si se muestra un mensaje de error específico o un estado que indique que la categoría no está disponible
-            WebElement mensajeError = driver.findElement(By.xpath("//p[contains(text(), 'no hay productos')]"));
+            WebElement mensajeError = wait.until(ExpectedConditions.visibilityOfElementLocated(mensajeNoResultados));
             return mensajeError.getText();
         } catch (NoSuchElementException e) {
-            // Asume que la categoría no está disponible si no encuentra el mensaje
-            return "La categoría no está disponible";
+            return "No se encontró el mensaje de error";
         }
     }
 
