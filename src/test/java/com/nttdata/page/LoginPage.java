@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class LoginPage extends PageObject {
     private By emailInput = By.id("field-email");
     private By passwordInput = By.id("field-password");
+    private By errorMessage = By.xpath("//*[@id=\"content\"]/section/div/ul/li");
     private By loginButton = By.xpath("//*[@id='submit-login']");
 
     private WebDriverWait wait;
@@ -26,6 +27,11 @@ public class LoginPage extends PageObject {
 
     public void clickLogin() {
         wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+    }
+
+    public String obtenerMensajeError() {
+        WebElement mensajeError = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
+        return mensajeError.getText();
     }
 }
 

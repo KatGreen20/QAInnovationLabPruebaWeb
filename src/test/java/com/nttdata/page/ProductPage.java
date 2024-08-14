@@ -1,6 +1,7 @@
 package com.nttdata.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,7 +13,8 @@ public class ProductPage {
 
     // Localizadores para el popup y agregar al carrito
     private By agregarCarritoButton = By.xpath("//*[@id=\"add-to-cart-or-refresh\"]/div[2]/div/div[2]/button");
-    private By popupMensaje = By.xpath("//body/div[@id='blockcart-modal']/div[1]/div[1]/div[1]/h4[1]/i[1]");
+    private By inputCantidadButton = By.xpath("//input[@id='quantity_wanted']");
+    private By popupMensaje = By.xpath("//*[@id=\"blockcart-modal\"]/div/div/div[2]/div/div[2]/div/p[1]");
     private By popupMontoTotal = By.xpath("//*[@id=\"blockcart-modal\"]/div/div/div[2]/div/div[2]/div/p[4]/span[2]");
 
     // Constructor que recibe el WebDriver
@@ -23,9 +25,22 @@ public class ProductPage {
 
     // Método para agregar producto al carrito
     public void agregarProductoAlCarrito(int cantidad) {
+        // Encuentra el campo de cantidad y asegúrate de que esté visible
+        WebElement cantidadInput = wait.until(ExpectedConditions.visibilityOfElementLocated(inputCantidadButton));
+
+        // Haz clic en el campo de cantidad para enfocarlo
+        cantidadInput.click();
+
+        // Selecciona  texto en el campo y borrarlo
+        cantidadInput.sendKeys(Keys.CONTROL + "a");
+        cantidadInput.sendKeys(Keys.BACK_SPACE);     // Borra el texto seleccionado
+
+        // Ingresa la cantidad deseada
+        cantidadInput.sendKeys(String.valueOf(cantidad));
+
+        // Haz clic en el botón "Agregar al carrito"
         WebElement addToCartButton = driver.findElement(agregarCarritoButton);
         addToCartButton.click();
-        // Implementa lógica adicional para seleccionar cantidad si es necesario
     }
 
     // Método para obtener el mensaje del popup

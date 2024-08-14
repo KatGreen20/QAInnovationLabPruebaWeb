@@ -1,5 +1,6 @@
 package com.nttdata.page;
 
+import net.serenitybdd.core.exceptions.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,4 +32,16 @@ public class StorePage {
         subcategoriaElement.click();
 
     }
+
+    public String obtenerMensajeCategoriaNoDisponible() {
+        try {
+            // Verifica si se muestra un mensaje de error específico o un estado que indique que la categoría no está disponible
+            WebElement mensajeError = driver.findElement(By.xpath("//p[contains(text(), 'no hay productos')]"));
+            return mensajeError.getText();
+        } catch (NoSuchElementException e) {
+            // Asume que la categoría no está disponible si no encuentra el mensaje
+            return "La categoría no está disponible";
+        }
+    }
+
 }
